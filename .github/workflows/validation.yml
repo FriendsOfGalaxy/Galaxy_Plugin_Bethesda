@@ -1,0 +1,27 @@
+name: Python application
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches:
+      - autoupdate
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Tests
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BASE_REF: ${{ github.base_ref }}
+        SRC: betty
+      run: |
+        pip install pytest
+        pytest .github/workflows/release_tests.py
+
