@@ -7,5 +7,6 @@
     "author": "TouwaStar",
     "email": "yowosek@gmail.com.com",
     "url": "https://github.com/TouwaStar/Galaxy_Plugin_Bethesda",
+    "update_url": "https://raw.githubusercontent.com/FriendsOfGalaxy/Galaxy_Plugin_Bethesda/master/current_version.json",
     "script": "plugin.py"
 }
