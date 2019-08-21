@@ -1,4 +1,4 @@
-Galaxy_Plugin_Bethesda galaxy integration
+galaxy-integration-bethesda galaxy integration
 
 This is a fork of the original work: https://github.com/TouwaStar/Galaxy_Plugin_Bethesda. The current build was reviewed by FriendsOfGalaxy community and scanned for any vulnerabilities.
 
