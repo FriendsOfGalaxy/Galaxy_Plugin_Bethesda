@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  deploy:
+    if: (github.head_ref == 'autoupdate' || github.head_ref == 'manualupdate') && github.base_ref == 'master' && github.event.pull_request.merged == true
+    runs-on: ubuntu-18.04
+    steps:
+
+    - uses: actions/checkout@v1
+      with:
+        ref: master
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+
+    - name: Install hub
+      uses: geertvdc/setup-hub@1.0.0
+
+    - name: Download scripts
+      run: curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/scripts.py --output ../scripts.py
+
+    - name: Create tag, release and assets
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPOSITORY: ${{ github.repository }}
+      run: python ../scripts.py release
+
+    - name: Update Release File
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPOSITORY: ${{ github.repository }}
+      run: python ../scripts.py update_release_file
