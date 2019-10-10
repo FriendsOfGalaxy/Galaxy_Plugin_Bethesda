@@ -1,11 +1,14 @@
 name: Synchronization
 
 on:
+  repository_dispatch:
   schedule:
-    - cron: '*/10 * * * *'
+    - cron:  '0 */12 * * *'  # runs every 12 hours
 
 jobs:
   sync:
+    if: (github.event_name == 'repository_dispatch' && github.event.action == 'sync') ||
+        (github.event_name == 'schedule')
     runs-on: ubuntu-18.04
     steps:
 
