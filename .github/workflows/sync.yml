@@ -3,7 +3,7 @@ name: Synchronization
 on:
   repository_dispatch:
   schedule:
-    - cron:  '0 */12 * * *'  # runs every 12 hours
+    - cron:  '0 */12 * * *'
 
 jobs:
   sync:
@@ -23,15 +23,16 @@ jobs:
       uses: geertvdc/setup-hub@v1.0.0
 
     - name: Download scripts
-      run: curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/scripts.py --output ../scripts.py
+      run: |
+        curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/scripts.py --output ../scripts.py
+        python -m pip install PyGithub==1.43
 
     - name: Check and sync to PR
       env:
         GITHUB_TOKEN: ${{ secrets.PTOKEN }}
-        REPOSITORY: ${{ github.repository }}
       run: python ../scripts.py sync
 
-    # Temporal workaround for not working pull_request on forks:
+    # Temporal workaround for not working pull_request on forks
     # https://github.community/t5/GitHub-Actions/Github-Workflow-not-running-from-pull-request-from-forked/m-p/33484/highlight/true#M1524
     - name: Trigger validation event
       env:

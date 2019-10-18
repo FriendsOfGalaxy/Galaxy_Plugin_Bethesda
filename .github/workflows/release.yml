@@ -22,18 +22,17 @@ jobs:
       with:
         python-version: 3.7
 
-    - name: Checkout scripts and tests
+    - name: Setup scripts
       run: |
         curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/scripts.py --output ../scripts.py
+        python -m pip install PyGithub==1.43
+        python -m pip install pip>19.2  # due to pip-compile bug
+        python -m pip install pip-tools
 
     - name: Build
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        REPOSITORY: ${{ github.repository }}
-      run: |
-        python -m pip install -U pip
-        python -m pip install pip-tools
-        python ../scripts.py build ../build/${{ matrix.os }}
+      run: python ../scripts.py build --dir ../build/${{ matrix.os }}
 
     - uses: actions/upload-artifact@master
       with:
@@ -59,8 +58,10 @@ jobs:
     - name: Install hub
       uses: geertvdc/setup-hub@master
 
-    - name: Download scripts
-      run: curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/scripts.py --output ../scripts.py
+    - name: Setup scripts
+      run: |
+        curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/scripts.py --output ../scripts.py
+        python -m pip install PyGithub==1.43
 
     - name: download Windows build
       uses: actions/download-artifact@master
@@ -78,7 +79,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REPOSITORY: ${{ github.repository }}
-      run: python ../scripts.py release ../build/
+      run: python ../scripts.py release --dir ../build/
 
     - name: Update Release File
       env:
