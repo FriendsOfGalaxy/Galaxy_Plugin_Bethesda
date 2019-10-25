@@ -9,26 +9,37 @@ on:
 
 jobs:
   build:
-    if: (github.event_name == 'repository_dispatch' && github.event.action == 'validation') ||
-        (github.event_name == 'pull_request')
-    runs-on: ubuntu-18.04
+    if: (github.event_name == 'pull_request') || (github.event_name == 'repository_dispatch' && github.event.action == 'validation')
+    strategy:
+      matrix:
+        os: [macOS-10.14, windows-2019]
+    runs-on: ${{ matrix.os }}
     steps:
 
     - uses: actions/checkout@v1
+      with:
+        ref: autoupdate
 
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
         python-version: 3.7
 
-    - name: Download tests
-      run: curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/tests.py --output ../tests.py
+    - name: Setup scripts and tests
+      run: |
+        curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/scripts.py --output ../scripts.py
+        curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/tests.py --output ../tests.py
+        python -m pip install -U pip  # due to pip-compile bug
+        python -m pip install PyGithub==1.43
+        python -m pip install pip-tools
+        python -m pip install pytest
+
+    - name: Build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: python ../scripts.py build --dir ../build/${{ matrix.os }}
 
     - name: Tests
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BASE_REF: ${{ github.base_ref }}
-      run: |
-        pip install pytest
-        pytest ../tests.py
-
+        TARGET: ../build/${{ matrix.os }}
+      run: pytest ../tests.py
