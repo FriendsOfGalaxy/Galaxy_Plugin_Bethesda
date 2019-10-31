@@ -25,9 +25,10 @@ jobs:
     - name: Setup scripts
       run: |
         curl https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integrations-updater/master/scripts.py --output ../scripts.py
+        python -m pip install -U pip
         python -m pip install PyGithub==1.43
-        python -m pip install pip>19.2  # due to pip-compile bug
         python -m pip install pip-tools
+        python -m pip install pytest
 
     - name: Build
       env:
@@ -67,13 +68,13 @@ jobs:
       uses: actions/download-artifact@master
       with:
         name: build_windows-2019
-        path: ../build/
+        path: ../build/windows
 
     - name: download macOS build
       uses: actions/download-artifact@master
       with:
         name: build_macOS-10.14
-        path: ../build/
+        path: ../build/macos
 
     - name: Release
       env:
