@@ -1,12 +1,12 @@
 {
-    "tag_name": "0.171",
+    "tag_name": "0.173",
     "assets": [
         {
-            "browser_download_url": "https://github.com/FriendsOfGalaxy/galaxy-integration-bethesda/releases/download/0.171/macos.zip",
+            "browser_download_url": "https://github.com/FriendsOfGalaxy/galaxy-integration-bethesda/releases/download/0.173/macos.zip",
             "name": "macos.zip"
         },
         {
-            "browser_download_url": "https://github.com/FriendsOfGalaxy/galaxy-integration-bethesda/releases/download/0.171/windows.zip",
+            "browser_download_url": "https://github.com/FriendsOfGalaxy/galaxy-integration-bethesda/releases/download/0.173/windows.zip",
             "name": "windows.zip"
         }
     ]
