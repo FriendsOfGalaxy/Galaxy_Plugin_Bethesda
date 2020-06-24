@@ -1,12 +1,12 @@
 {
-    "tag_name": "0.183",
+    "tag_name": "0.184",
     "assets": [
         {
-            "browser_download_url": "https://github.com/FriendsOfGalaxy/galaxy-integration-bethesda/releases/download/0.183/macos.zip",
+            "browser_download_url": "https://github.com/FriendsOfGalaxy/galaxy-integration-bethesda/releases/download/0.184/macos.zip",
             "name": "macos.zip"
         },
         {
-            "browser_download_url": "https://github.com/FriendsOfGalaxy/galaxy-integration-bethesda/releases/download/0.183/windows.zip",
+            "browser_download_url": "https://github.com/FriendsOfGalaxy/galaxy-integration-bethesda/releases/download/0.184/windows.zip",
             "name": "windows.zip"
         }
     ]
