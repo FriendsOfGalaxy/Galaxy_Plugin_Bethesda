@@ -2,11 +2,10 @@
     "name": "Galaxy Bethesda plugin",
     "platform": "bethesda",
     "guid": "cb57391f-1675-35b1-05c0-896d43bdf4f8",
-    "version": "1.0.2",
+    "version": "0.186",
     "description": "Galaxy Bethesda plugin",
     "author": "TouwaStar",
     "email": "yowosek@gmail.com.com",
     "url": "https://github.com/TouwaStar/Galaxy_Plugin_Bethesda",
-    "update_url": "https://raw.githubusercontent.com/FriendsOfGalaxy/galaxy-integration-bethesda/master/current_version.json",
     "script": "plugin.py"
 }

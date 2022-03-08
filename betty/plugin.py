@@ -14,8 +14,6 @@ from galaxy.api.types import NextStep, Authentication, Game, LicenseInfo, Licens
 from galaxy.api.errors import InvalidCredentials, UnknownError, BackendError, AccessDenied, Banned
 from version import __version__
 
-from typing import Any, List, Optional
-
 from consts import AUTH_PARAMS, JS
 from backend import BethesdaClient
 from http_client import AuthenticatedHttpClient
@@ -151,7 +149,11 @@ class BethesdaPlugin(Plugin):
         product_ids = self._check_for_owned_products(owned_ids)
         pre_order_ids = set(owned_ids) - set(product_ids)
 
-        games_to_send.extend(await self._get_owned_pre_orders(pre_order_ids))
+        try:
+            games_to_send.extend(await self._get_owned_pre_orders(pre_order_ids))
+        except Exception as e:
+            log.warning(f"Unable to obtain preorders: {repr(e)}")
+
         games_to_send.extend(self._get_owned_games())
 
         log.info(f"Games to send (with free games): {games_to_send}")
@@ -176,16 +178,6 @@ class BethesdaPlugin(Plugin):
         self._asked_for_local = True
         log.info(f"Returning local games {local_games}")
         return local_games
-
-    async def prepare_local_size_context(self, game_ids: List[str]) -> Any:
-        return None
-
-    async def get_local_size(self, game_id: str, context: Any) -> Optional[int]:
-        local_cache = self.local_client.local_games_cache.copy()
-        for game in local_cache:
-            if local_cache[game]['local_id'] == game_id:
-                return await self.local_client.get_size_at_path(local_cache[game]['path'])
-
 
     async def install_game(self, game_id):
         if sys.platform != 'win32':
